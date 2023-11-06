@@ -38,6 +38,26 @@ async function run() {
                   res.send(result)
             })
 
+            app.get('/api/v1/allJobs', async (req, res) => {
+                  const result = await allJobCollection.find().toArray();
+                  res.send(result)
+            })
+
+            // app.get('/products/:Nike', async (req, res) => {
+            //       const { Nike } = req.params;
+            //       const query = { brand: Nike }
+            //       const cursor = productsCollection.find(query);
+            //       const result = await cursor.toArray();
+            //       res.send(result);
+            // });
+
+            app.get('/api/v1/allJobs/:category', async (req, res) => {
+                  const { category } = req.params;
+                  let query = { jobCategory: category };
+                  const result = await allJobCollection.find(query).toArray();
+                  res.json(result);
+            });
+
             // Send a ping to confirm a successful connection
             await client.db("admin").command({ ping: 1 });
             console.log("Pinged your deployment. You successfully connected to MongoDB!");
