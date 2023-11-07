@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express')
 const app = express();
 const cors = require('cors')
@@ -38,25 +38,27 @@ async function run() {
                   res.send(result)
             })
 
+            // get all jobs
             app.get('/api/v1/allJobs', async (req, res) => {
                   const result = await allJobCollection.find().toArray();
                   res.send(result)
             })
 
-            // app.get('/products/:Nike', async (req, res) => {
-            //       const { Nike } = req.params;
-            //       const query = { brand: Nike }
-            //       const cursor = productsCollection.find(query);
-            //       const result = await cursor.toArray();
-            //       res.send(result);
-            // });
-
+            // get job by category
             app.get('/api/v1/allJobs/:category', async (req, res) => {
                   const { category } = req.params;
                   let query = { jobCategory: category };
                   const result = await allJobCollection.find(query).toArray();
                   res.json(result);
             });
+
+            // get job by id || single job || job details
+            app.get('/api/v1/allJobs/jobDetails/:id', async (req, res) => {
+                  const id = req.params.id;
+                  const query = { _id: new ObjectId(id) }
+                  const result = await allJobCollection.findOne(query);
+                  res.send(result)
+            })
 
             // Send a ping to confirm a successful connection
             await client.db("admin").command({ ping: 1 });
