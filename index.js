@@ -44,6 +44,16 @@ async function run() {
                   res.send(result)
             })
 
+            app.get('/api/v1/jobs', async (req, res) => {
+                  console.log(req.query.userEmail);
+                  let query = {};
+                  if (req.query.userEmail) {
+                        query = { userEmail: req.query.userEmail }
+                  }
+                  const result = await allJobCollection.find(query).toArray();
+                  res.send(result)
+            })
+
             // get job by category
             app.get('/api/v1/allJobs/:category', async (req, res) => {
                   const { category } = req.params;
@@ -53,10 +63,45 @@ async function run() {
             });
 
             // get job by id || single job || job details
-            app.get('/api/v1/allJobs/jobDetails/:id', async (req, res) => {
+            app.get('/api/v1/allJobs/singleJobs/:id', async (req, res) => {
                   const id = req.params.id;
                   const query = { _id: new ObjectId(id) }
                   const result = await allJobCollection.findOne(query);
+                  res.send(result)
+            })
+
+            //  // update product
+            //  app.put('/products/:id', async (req, res) => {
+            //       const id = req.params.id;
+            //       const product = req.body;
+            //       const filter = { _id: new ObjectId(id) }
+            //       const options = { upsert: true };
+            //       const updatedProduct = {
+            //             $set: {
+            //                   image: product.image,
+            //                   name: product.name,
+            //                   brand: product.brand,
+            //                   type: product.type,
+            //                   price: product.price,
+            //                   rating: product.rating,
+            //             },
+            //       };
+            //       const result = await productsCollection.updateOne(filter, updatedProduct, options);
+            //       res.send(result);
+            // })
+
+            // update data || put method
+            app.put('/api/v1/allJobs/singleJobs/:id', async (req, res) => {
+                  const id = req.params.id;
+                  const job = req.body;
+                  const query = { _id: new ObjectId(id) }
+                  const options = { upsert: true };
+                  const updateDoc = {
+                        $set: {
+                              ...job
+                        },
+                  };
+                  const result = await allJobCollection.updateOne(query, updateDoc, options)
                   res.send(result)
             })
 
