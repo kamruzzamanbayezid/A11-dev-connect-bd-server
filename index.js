@@ -33,7 +33,6 @@ const appliedJobCollection = client.db("devConnectBdDB").collection('appliedJobs
 // middleware 
 
 // verify token
-// verifyToken
 const verifyToken = (req, res, next) => {
       const token = req.cookies.token;
       if (!token) {
