@@ -10,9 +10,8 @@ const port = process.env.PORT || 5000;
 // middleware
 app.use(cors({
       origin: [
-            'http://localhost:5173',
-            // 'https://dev-connect-bd.web.app',
-            // 'https://dev-connect-bd.firebaseapp.com'
+            'https://dev-connect-bd.web.app',
+            'https://dev-connect-bd.firebaseapp.com'
       ],
       credentials: true
 }));
